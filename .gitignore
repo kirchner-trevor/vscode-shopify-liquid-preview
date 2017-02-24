@@ -1,0 +1,4 @@
+# Development temporary files
+out
+node_modules
+.vscode-test

@@ -1,0 +1,49 @@
+{
+    "name": "vscode-handlebars-preview",
+    "displayName": "Handlebars Preview",
+    "description": "Live preview for Handlebar templates",
+    "version": "1.0.0",
+    "publisher": "chaliy",
+    "engines": {
+        "vscode": "^1.5.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:handlebarsPreview.preview"
+    ],
+    "main": "./out/src/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "handlebarsPreview.preview",
+                "title": "Handlebars: Open Preview"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "handlebarsPreview.preview",
+                "key": "ctrl+p h",
+                "when": "!terminalFocus"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "tsc -p ./",
+        "compile": "copyfiles test/examples/*.* out/ && tsc -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "@types/mocha": "^2.2.32",
+        "@types/node": "^6.0.40",
+        "copyfiles": "^1.2.0",
+        "mocha": "^2.3.3",
+        "typescript": "^2.0.3",
+        "vscode": "^1.0.0"
+    },
+    "dependencies": {
+        "handlebars": "^4.0.6"
+    }
+}

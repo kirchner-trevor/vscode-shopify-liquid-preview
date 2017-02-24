@@ -1,0 +1,10 @@
+{
+    "files.exclude": {
+        "out": false
+    },
+    "search.exclude": {
+        "out": true,
+        ".vscode-test": true,
+        "node_modules": true
+    }
+}

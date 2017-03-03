@@ -1,37 +1,20 @@
-import {
-    TextDocument
-} from "vscode";
-import { dirname } from "path";
-import { existsSync, readFileSync } from "fs";
 import Handlebars from "handlebars";
 
-const readJson = (filePath) => {
-    if (dirname(filePath) && existsSync(filePath)) {
-        return JSON.parse(readFileSync(filePath, 'utf8'));
-    }
-    return {};
-}
-
-export default (activeDocument: TextDocument): string => {
-    if (!activeDocument) {
-        return `<body>Select document to render</body>`
+export default (templateSource, dataSource): string => {
+    if (!templateSource) {
+        return "<body>Select document to render</body>";
     }
 
-    let fileName = activeDocument.fileName;
-    let dataFileName = fileName + '.json';
-    
-    let data = readJson(dataFileName);
-    let text: string = activeDocument.getText();
-
-    this._template = Handlebars.compile(text);
-
-    try {
-        
-        return this._template(data);
+    try {   
+        let data = JSON.parse(dataSource || "{}");
+        let template = Handlebars.compile(templateSource);
+        return template(data);
     } catch (ex) {
-
         return `
-            <body>${ex}</body>
+            <body>
+                <h2>Error occured</h2>
+                <pre>${ex}</pre>
+            </body>
         `;
     }
 }

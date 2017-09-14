@@ -1,4 +1,4 @@
-# Heandlebars Preview for Visual Studio Code
+# Handlebars Preview for Visual Studio Code
 
 Live preview for your Handlebars templates. Extension compiles Handlebars template on the fly, apply preview data and render resulting HTML in separate window.
 

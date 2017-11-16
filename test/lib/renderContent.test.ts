@@ -11,7 +11,7 @@ suite("lib/renderContent", () => {
   });
 
   test("render with context", () => {
-    console.log(join(__dirname, "../examples/simple.handlebars"));
+    console.log(join(__dirname, "../examples/simple.liquid"));
     const html = renderContent("Super {{foo}}!", "{ \"foo\": \"bar\" }");
     assert.equal(html, "Super bar!");
   });

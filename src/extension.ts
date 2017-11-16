@@ -13,7 +13,7 @@ export function activate(context: ExtensionContext) {
 
     context.subscriptions.push(
         // Preview providers
-        workspace.registerTextDocumentContentProvider("handlebars-preview", provider),
+        workspace.registerTextDocumentContentProvider("shopify-liquid-preview", provider),
 
         // Global handlers
         window.onDidChangeTextEditorSelection((e: TextEditorSelectionChangeEvent) => {
@@ -28,7 +28,7 @@ export function activate(context: ExtensionContext) {
         }),
 
         // Commands
-        commands.registerCommand('handlebarsPreview.preview', preview)
+        commands.registerCommand('shopifyLiquidPreview.preview', preview)
     );
 }
 

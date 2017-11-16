@@ -1,3 +1,3 @@
 import { Uri } from "vscode";
 
-export default Uri.parse("handlebars-preview://authority/preview");
+export default Uri.parse("shopify-liquid-preview://authority/preview");

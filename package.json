@@ -1,16 +1,16 @@
 {
-  "name": "handlebars-preview",
-  "displayName": "Handlebars Preview",
-  "description": "Live preview for Handlebar templates",
+  "name": "shopify-liquid-preview",
+  "displayName": "Shopify Liquid Preview",
+  "description": "Live preview for Shopify Liquid templates",
   "version": "1.0.0",
-  "publisher": "chaliy",
+  "publisher": "kirchner-trevor",
   "engines": {
     "vscode": "^1.5.0"
   },
   "icon": "icon.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/chaliy/vscode-handlebars-preview"
+    "url": "https://github.com/kirchner-trevor/vscode-shopify-liquid-preview"
   },
   "galleryBanner": {
     "color": "#0F6378",
@@ -20,24 +20,26 @@
     "Other"
   ],
   "keywords": [
-    "Handlebars",
+    "Shopify",
+    "Liquid",
+    "Template",
     "Live Preview"
   ],
   "activationEvents": [
-    "onCommand:handlebarsPreview.preview"
+    "onCommand:shopifyLiquidPreview.preview"
   ],
   "main": "./out/src/extension",
   "contributes": {
     "commands": [
       {
-        "command": "handlebarsPreview.preview",
-        "title": "Handlebars: Open Preview"
+        "command": "shopifyLiquidPreview.preview",
+        "title": "Shopify Liquid: Open Preview"
       }
     ],
     "keybindings": [
       {
-        "command": "handlebarsPreview.preview",
-        "key": "ctrl+p h",
+        "command": "shopifyLiquidPreview.preview",
+        "key": "ctrl+p l",
         "when": "!terminalFocus"
       }
     ]

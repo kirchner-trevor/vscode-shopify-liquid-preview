@@ -6,5 +6,5 @@ import {
 import PREVIEW_URI from "./PREVIEW_URI";
 
 export default () => {
-    return commands.executeCommand("vscode.previewHtml", PREVIEW_URI, ViewColumn.Two, "Handlebars HTML Preview");
+    return commands.executeCommand("vscode.previewHtml", PREVIEW_URI, ViewColumn.Two, "Shopify Liquid HTML Preview");
 }

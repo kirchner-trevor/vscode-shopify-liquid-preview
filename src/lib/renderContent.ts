@@ -1,4 +1,4 @@
-import Handlebars from "handlebars";
+let ShopifyLiquid = require("shopify-liquid")();
 
 export default (templateSource, dataSource): string => {
     if (!templateSource) {
@@ -7,8 +7,8 @@ export default (templateSource, dataSource): string => {
 
     try {   
         let data = JSON.parse(dataSource || "{}");
-        let template = Handlebars.compile(templateSource);
-        return template(data);
+        let template = ShopifyLiquid.parse(templateSource);
+        return ShopifyLiquid.render(template, data);
     } catch (ex) {
         return `
             <body>

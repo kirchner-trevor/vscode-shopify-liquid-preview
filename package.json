@@ -28,15 +28,19 @@
   ],
   "main": "./out/src/extension",
   "contributes": {
-    "commands": [{
-      "command": "handlebarsPreview.preview",
-      "title": "Handlebars: Open Preview"
-    }],
-    "keybindings": [{
-      "command": "handlebarsPreview.preview",
-      "key": "ctrl+p h",
-      "when": "!terminalFocus"
-    }]
+    "commands": [
+      {
+        "command": "handlebarsPreview.preview",
+        "title": "Handlebars: Open Preview"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "handlebarsPreview.preview",
+        "key": "ctrl+p h",
+        "when": "!terminalFocus"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "tsc -p ./",
@@ -53,6 +57,6 @@
     "vscode": "^1.0.0"
   },
   "dependencies": {
-    "handlebars": "^4.0.6"
+    "shopify-liquid": "^1.9.0"
   }
 }

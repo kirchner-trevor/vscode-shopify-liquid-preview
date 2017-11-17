@@ -1,64 +1,64 @@
 {
-  "name": "shopify-liquid-preview",
-  "displayName": "Shopify Liquid Preview",
-  "description": "Live preview for Shopify Liquid templates",
-  "version": "1.0.0",
-  "publisher": "kirchner-trevor",
-  "engines": {
-    "vscode": "^1.5.0"
-  },
-  "icon": "icon.png",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/kirchner-trevor/vscode-shopify-liquid-preview"
-  },
-  "galleryBanner": {
-    "color": "#0F6378",
-    "theme": "dark"
-  },
-  "categories": [
-    "Other"
-  ],
-  "keywords": [
-    "Shopify",
-    "Liquid",
-    "Template",
-    "Live Preview"
-  ],
-  "activationEvents": [
-    "onCommand:shopifyLiquidPreview.preview"
-  ],
-  "main": "./out/src/extension",
-  "contributes": {
-    "commands": [
-      {
-        "command": "shopifyLiquidPreview.preview",
-        "title": "Shopify Liquid: Open Preview"
-      }
+    "name": "shopify-liquid-preview",
+    "displayName": "Shopify Liquid Preview",
+    "description": "Live preview for Shopify Liquid templates",
+    "version": "1.0.1",
+    "publisher": "kirchner-trevor",
+    "engines": {
+        "vscode": "^1.5.0"
+    },
+    "icon": "icon.png",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kirchner-trevor/vscode-shopify-liquid-preview"
+    },
+    "galleryBanner": {
+        "color": "#0F6378",
+        "theme": "dark"
+    },
+    "categories": [
+        "Other"
     ],
-    "keybindings": [
-      {
-        "command": "shopifyLiquidPreview.preview",
-        "key": "ctrl+p l",
-        "when": "!terminalFocus"
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "tsc -p ./",
-    "compile": "copyfiles test/examples/*.* out/ && tsc -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "npm run compile && node ./node_modules/vscode/bin/test"
-  },
-  "devDependencies": {
-    "@types/mocha": "^2.2.32",
-    "@types/node": "^6.0.40",
-    "copyfiles": "^1.2.0",
-    "mocha": "^2.3.3",
-    "typescript": "^2.0.3",
-    "vscode": "^1.0.0"
-  },
-  "dependencies": {
-    "liquidjs": "^2.0.2"
-  }
+    "keywords": [
+        "Shopify",
+        "Liquid",
+        "Template",
+        "Live Preview"
+    ],
+    "activationEvents": [
+        "onCommand:shopifyLiquidPreview.preview"
+    ],
+    "main": "./out/src/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "shopifyLiquidPreview.preview",
+                "title": "Shopify Liquid: Open Preview"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "shopifyLiquidPreview.preview",
+                "key": "ctrl+p l",
+                "when": "!terminalFocus"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "tsc -p ./",
+        "compile": "copyfiles test/examples/*.* out/ && tsc -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "@types/mocha": "^2.2.32",
+        "@types/node": "^6.0.40",
+        "copyfiles": "^1.2.0",
+        "mocha": "^2.3.3",
+        "typescript": "^2.0.3",
+        "vscode": "^1.0.0"
+    },
+    "dependencies": {
+        "liquidjs": "^2.0.2"
+    }
 }

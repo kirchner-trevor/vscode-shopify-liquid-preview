@@ -27,7 +27,7 @@ export default class HtmlDocumentContentProvider implements TextDocumentContentP
     constructor() {
     }
 
-    public provideTextDocumentContent(uri: Uri): string {
+    public provideTextDocumentContent(uri: Uri): Promise<string> {
         let templateSource;
         let dataSource;
         

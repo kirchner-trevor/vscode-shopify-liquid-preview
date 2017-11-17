@@ -59,6 +59,6 @@
     "vscode": "^1.0.0"
   },
   "dependencies": {
-    "shopify-liquid": "^1.9.0"
+    "liquidjs": "^2.0.2"
   }
 }

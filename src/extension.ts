@@ -6,6 +6,7 @@ import {
 import PreviewContentProvider from './lib/PreviewContentProvider';
 import PREVIEW_URL from './lib/PREVIEW_URI';
 import preview from './lib/preview';
+import previewText from './lib/previewText';
 
 export function activate(context: ExtensionContext) {
 
@@ -28,7 +29,8 @@ export function activate(context: ExtensionContext) {
         }),
 
         // Commands
-        commands.registerCommand('shopifyLiquidPreview.preview', preview)
+        commands.registerCommand('shopifyLiquidPreview.preview', preview),
+        commands.registerCommand('shopifyLiquidPreview.previewText', previewText)
     );
 }
 

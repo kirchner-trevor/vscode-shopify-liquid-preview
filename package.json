@@ -26,7 +26,8 @@
         "Live Preview"
     ],
     "activationEvents": [
-        "onCommand:shopifyLiquidPreview.preview"
+        "onCommand:shopifyLiquidPreview.preview",
+        "onCommand:shopifyLiquidPreview.previewText"
     ],
     "main": "./out/src/extension",
     "contributes": {
@@ -34,6 +35,10 @@
             {
                 "command": "shopifyLiquidPreview.preview",
                 "title": "Shopify Liquid: Open Preview"
+            },
+            {
+                "command": "shopifyLiquidPreview.previewText",
+                "title": "Shopify Liquid: Open Preview (Plaintext)"
             }
         ],
         "keybindings": [

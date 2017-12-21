@@ -2,7 +2,7 @@
     "name": "shopify-liquid-preview",
     "displayName": "Shopify Liquid Preview",
     "description": "Live preview for Shopify Liquid templates",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "publisher": "kirchner-trevor",
     "engines": {
         "vscode": "^1.5.0"
@@ -31,22 +31,30 @@
     ],
     "main": "./out/src/extension",
     "contributes": {
+        "languages": [
+          {
+            "id": "liquid",
+            "extensions": [
+              ".liquid"
+            ]
+          }
+        ],
         "commands": [
             {
                 "command": "shopifyLiquidPreview.preview",
-                "title": "Shopify Liquid: Open Preview"
+                "title": "Shopify Liquid: Open Preview to the Side"
             },
             {
                 "command": "shopifyLiquidPreview.previewText",
-                "title": "Shopify Liquid: Open Preview (Plaintext)"
+                "title": "Shopify Liquid: Open Preview to the Side (Plaintext)"
             }
         ],
-        "keybindings": [
-            {
-                "command": "shopifyLiquidPreview.preview",
-                "key": "ctrl+p l",
-                "when": "!terminalFocus"
-            }
+        "keybindings":[
+          {
+            "command": "shopifyLiquidPreview.preview",
+            "key": "ctrl+k v",
+            "when": "editorLangId == liquid"
+          }
         ]
     },
     "scripts": {

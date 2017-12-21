@@ -11,6 +11,7 @@ Gives a live preview for Shopify Liquid templates. The extension compiles Shopif
 
 - Use the keybinding `ctrl+k v` while selecting a file with a `.liquid` extension
 - Use the keybinding `ctrl+shift+p` and type **Shopify Liquid: Open Preview to the Side** to run from command panel
+
 ## Credits
 
 - [Handlebars Preview for Visual Studio Code](https://github.com/chaliy/vscode-handlebars-preview/)

@@ -14,7 +14,7 @@ export function activate(context: ExtensionContext) {
 
     context.subscriptions.push(
         // Preview providers
-        workspace.registerTextDocumentContentProvider("shopify-liquid-preview", provider),
+        workspace.registerTextDocumentContentProvider("braze-liquid-preview", provider),
 
         // Global handlers
         window.onDidChangeTextEditorSelection((e: TextEditorSelectionChangeEvent) => {
@@ -29,8 +29,8 @@ export function activate(context: ExtensionContext) {
         }),
 
         // Commands
-        commands.registerCommand('shopifyLiquidPreview.preview', preview),
-        commands.registerCommand('shopifyLiquidPreview.previewText', previewText)
+        commands.registerCommand('brazeLiquidPreview.preview', preview),
+        commands.registerCommand('brazeLiquidPreview.previewText', previewText)
     );
 }
 

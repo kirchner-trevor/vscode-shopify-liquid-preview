@@ -32,12 +32,12 @@
     "main": "./out/src/extension",
     "contributes": {
         "languages": [
-          {
-            "id": "liquid",
-            "extensions": [
-              ".liquid"
-            ]
-          }
+            {
+                "id": "liquid",
+                "extensions": [
+                    ".liquid"
+                ]
+            }
         ],
         "commands": [
             {
@@ -49,12 +49,12 @@
                 "title": "Shopify Liquid: Open Preview to the Side (Plaintext)"
             }
         ],
-        "keybindings":[
-          {
-            "command": "shopifyLiquidPreview.preview",
-            "key": "ctrl+k v",
-            "when": "editorLangId == liquid"
-          }
+        "keybindings": [
+            {
+                "command": "shopifyLiquidPreview.preview",
+                "key": "ctrl+k v",
+                "when": "editorLangId == liquid"
+            }
         ]
     },
     "scripts": {

@@ -1,5 +1,18 @@
-let Liquid = require("liquidjs");
-let LiquidEngine = Liquid();
+import Liquid from 'liquidjs';
+import brazeFilters from './braze/filters';
+import brazeTags from './braze/tags';
+
+const registerBrazeFilters = (engine: Liquid) => {
+  Object.keys(brazeFilters).forEach((name) => {
+    engine.registerFilter(name, brazeFilters[name]);
+  });
+}
+
+const registerBrazeTags = (engine: Liquid) => {
+  Object.keys(brazeTags).forEach((name) => {
+    engine.registerTag(name, brazeTags[name]);
+  });
+};
 
 export default (templateSource, dataSource): Promise<string> => {
   return Promise.resolve()
@@ -8,8 +21,13 @@ export default (templateSource, dataSource): Promise<string> => {
         return "<body>Select document to render</body>";
       }
 
+      const engine = new Liquid();
+      
+      registerBrazeFilters(engine);
+      registerBrazeTags(engine);
+
       let data = JSON.parse(dataSource || "{}");
-      return LiquidEngine.parseAndRender(templateSource, data);
+      return engine.parseAndRender(templateSource, data);
     })
     .catch((error) => {
       return `

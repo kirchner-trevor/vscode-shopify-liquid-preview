@@ -1,16 +1,16 @@
 {
-    "name": "shopify-liquid-preview",
-    "displayName": "Shopify Liquid Preview",
-    "description": "Live preview for Shopify Liquid templates",
-    "version": "1.0.2",
-    "publisher": "kirchner-trevor",
+    "name": "braze-liquid-preview",
+    "displayName": "Braze Liquid Preview",
+    "description": "Live preview for Braze Liquid templates",
+    "version": "0.0.1",
+    "publisher": "yq314",
     "engines": {
         "vscode": "^1.5.0"
     },
     "icon": "icon.png",
     "repository": {
         "type": "git",
-        "url": "https://github.com/kirchner-trevor/vscode-shopify-liquid-preview"
+        "url": "https://github.com/yq314/vscode-braze-liquid-preview"
     },
     "galleryBanner": {
         "color": "#0F6378",
@@ -20,14 +20,14 @@
         "Other"
     ],
     "keywords": [
-        "Shopify",
+        "Braze",
         "Liquid",
         "Template",
         "Live Preview"
     ],
     "activationEvents": [
-        "onCommand:shopifyLiquidPreview.preview",
-        "onCommand:shopifyLiquidPreview.previewText"
+        "onCommand:brazeLiquidPreview.preview",
+        "onCommand:brazeLiquidPreview.previewText"
     ],
     "main": "./out/src/extension",
     "contributes": {
@@ -41,17 +41,17 @@
         ],
         "commands": [
             {
-                "command": "shopifyLiquidPreview.preview",
-                "title": "Shopify Liquid: Open Preview to the Side"
+                "command": "brazeLiquidPreview.preview",
+                "title": "Braze Liquid: Open Preview to the Side"
             },
             {
-                "command": "shopifyLiquidPreview.previewText",
-                "title": "Shopify Liquid: Open Preview to the Side (Plaintext)"
+                "command": "brazeLiquidPreview.previewText",
+                "title": "Braze Liquid: Open Preview to the Side (Plaintext)"
             }
         ],
         "keybindings": [
             {
-                "command": "shopifyLiquidPreview.preview",
+                "command": "brazeLiquidPreview.preview",
                 "key": "ctrl+k v",
                 "when": "editorLangId == liquid"
             }
@@ -72,6 +72,8 @@
         "vscode": "^1.0.0"
     },
     "dependencies": {
-        "liquidjs": "^2.0.2"
+        "@types/request-promise-native": "^1.0.15",
+        "liquidjs": "^8.1.0",
+        "request-promise-native": "^1.0.7"
     }
 }

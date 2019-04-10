@@ -3,7 +3,7 @@
     "displayName": "Braze Liquid Preview",
     "description": "Live preview for Braze Liquid templates",
     "version": "0.0.1",
-    "publisher": "yq314",
+    "publisher": "chinyip",
     "engines": {
         "vscode": "^1.5.0"
     },

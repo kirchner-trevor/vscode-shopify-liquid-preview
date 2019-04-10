@@ -36,13 +36,20 @@ export default <ITagImplOptions>{
                 throw new Error(`No secret found for ${this.options.basic_auth}`)
             }
 
-            const authStr = Buffer.from(`${this.options.basic_auth}:${secret}`).toString('base64')
+            if (!secret.username || !secret.password) {
+                throw new Error(`No username or password set for ${this.options.basic_auth}`);
+            }
+
+            const authStr = Buffer.from(`${secret.username}:${secret.password}`).toString('base64')
             headers['Authorization'] = `Basic ${authStr}`
         }
-        
+
+        const renderedUrl = await this.liquid.parseAndRender(this.url, ctx.getAll())
+        console.log(`rendered url is ${renderedUrl}`)
+
         const res = await rp({
             method: 'GET',
-            uri: this.url,
+            uri: renderedUrl,
             headers: headers,
             json: !!this.options.save
         }).promise();

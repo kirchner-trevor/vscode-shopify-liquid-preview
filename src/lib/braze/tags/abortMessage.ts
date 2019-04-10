@@ -5,10 +5,10 @@ import ITagImplOptions from 'liquidjs/dist/template/tag/itag-impl-options'
 
 // usage {% abort_message('message to display')  %}
 export default <ITagImplOptions>{
-    parse: (tagToken: TagToken, remainTokens: Token[]) => {
+    parse: function(tagToken: TagToken) {
         
     },
-    render: async (ctx: Context) => {
+    render: async function(ctx: Context) {
 
     }
 }

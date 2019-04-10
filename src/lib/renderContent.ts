@@ -1,6 +1,7 @@
-import Liquid from 'liquidjs';
-import brazeFilters from './braze/filters';
-import brazeTags from './braze/tags';
+import Liquid from 'liquidjs'
+import brazeFilters from './braze/filters'
+import brazeTags from './braze/tags'
+import { AbortError } from './errors'
 
 const registerBrazeFilters = (engine: Liquid) => {
   Object.keys(brazeFilters).forEach((name) => {
@@ -30,6 +31,10 @@ export default (templateSource, dataSource): Promise<string> => {
       return engine.parseAndRender(templateSource, data);
     })
     .catch((error) => {
+      if (error.originalError && error.originalError.name == 'AbortError') {
+        return error.originalError.message
+      }
+
       return `
           <body>
               <h2>Error occured</h2>

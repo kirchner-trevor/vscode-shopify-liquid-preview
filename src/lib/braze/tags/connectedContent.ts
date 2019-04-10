@@ -1,11 +1,11 @@
 import TagToken from 'liquidjs/dist/parser/tag-token'
 import Context from 'liquidjs/dist/context/context'
 import ITagImplOptions from 'liquidjs/dist/template/tag/itag-impl-options'
-import * as rp from 'request-promise-native'
+import * as rp from 'request-promise-cache'
 
 const re = new RegExp(`(https?[^\\s]+)(\\s+.*)?$`)
 
-// usage {% connected_content https://example.com :basic_auth username :retry :save name %}
+// usage {% connected_content https://example.com :basic_auth username :retry :save name :cache 900 %}
 export default <ITagImplOptions>{
     parse: function(tagToken: TagToken) {
         const match = tagToken.args.match(re)
@@ -25,7 +25,20 @@ export default <ITagImplOptions>{
         }
     },
     render: async function(ctx: Context) {
-        const headers = {}
+        const renderedUrl = await this.liquid.parseAndRender(this.url, ctx.getAll())
+        console.log(`rendered url is ${renderedUrl}`)
+
+        const rpOption = {
+            method: 'GET',
+            headers: {
+                'User-Agent': 'braze-liquid-preview-vscode-extension',
+            },
+            uri: renderedUrl,
+            json: !!this.options.save,
+            cacheKey: renderedUrl,
+            cacheTTL: (this.options.cache == undefined ? 300 : this.options.cache) * 1000,
+        }
+
         if (this.options.basic_auth) {
             const secrets = ctx.environments['__secrets']
             if (!secrets) {
@@ -40,19 +53,13 @@ export default <ITagImplOptions>{
                 throw new Error(`No username or password set for ${this.options.basic_auth}`);
             }
 
-            const authStr = Buffer.from(`${secret.username}:${secret.password}`).toString('base64')
-            headers['Authorization'] = `Basic ${authStr}`
+            rpOption['auth'] = {
+                user: secret.username,
+                pass: secret.password,
+            }
         }
 
-        const renderedUrl = await this.liquid.parseAndRender(this.url, ctx.getAll())
-        console.log(`rendered url is ${renderedUrl}`)
-
-        const res = await rp({
-            method: 'GET',
-            uri: renderedUrl,
-            headers: headers,
-            json: !!this.options.save
-        }).promise();
+        const res = await rp(rpOption);
 
         if (this.options.save) {
             ctx.scopes[0][this.options.save] = res

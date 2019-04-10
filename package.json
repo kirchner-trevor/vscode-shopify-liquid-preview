@@ -74,6 +74,6 @@
     "dependencies": {
         "@types/request-promise-native": "^1.0.15",
         "liquidjs": "^8.1.0",
-        "request-promise-native": "^1.0.7"
+        "request-promise-cache": "^2.0.1"
     }
 }

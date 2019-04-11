@@ -1,6 +1,11 @@
 # Braze Liquid Preview for Visual Studio Code
 
-Gives a live preview for [Braze Liquid](https://www.braze.com/docs/user_guide/personalization_and_dynamic_content/liquid/overview/) templates. The extension compiles Braze Liquid template on the fly, applying preview data and rendering resulting HTML or plaintext in separate window.
+![GitHub](https://img.shields.io/github/license/yq314/vscode-braze-liquid-preview.svg)
+![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/chinyip.braze-liquid-preview.svg?logo=visual-studio-code)
+![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/chinyip.braze-liquid-preview.svg?logo=visual-studio-code)
+
+
+Gives a live preview for [Braze Liquid](https://www.braze.com/docs/user_guide/personalization_and_dynamic_content/liquid/overview/) templates. The extension compiles Braze Liquid template on the fly, applying preview data and rendering resulting HTML in separate window.
 
 The code is based on [Trevor Kirchner](https://github.com/kirchner-trevor)'s [vscode-shopify-liquid-preview](https://github.com/kirchner-trevor/vscode-shopify-liquid-preview). I extended it with additional Braze specific tags and filters so it works for Braze liquid too.
 
@@ -19,7 +24,12 @@ The code is based on [Trevor Kirchner](https://github.com/kirchner-trevor)'s [vs
 #### Filters
 - `property_accessor`
   ```
-  {% hash | property_accessor: 'key' %}
+  {{ hash | property_accessor: 'key' }}
+  ```
+- `slice`
+  ```
+  {{ str | slice: 1 }}
+  {{ str | slice: 0, -1 }}
   ```
 
 #### Tags

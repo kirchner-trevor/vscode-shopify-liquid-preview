@@ -2,10 +2,10 @@
     "name": "braze-liquid-preview",
     "displayName": "Braze Liquid Preview",
     "description": "Live preview for Braze Liquid templates",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "chinyip",
     "engines": {
-        "vscode": "^1.5.0"
+        "vscode": "^1.23.0"
     },
     "icon": "icon.png",
     "repository": {
@@ -26,8 +26,7 @@
         "Live Preview"
     ],
     "activationEvents": [
-        "onCommand:brazeLiquidPreview.preview",
-        "onCommand:brazeLiquidPreview.previewText"
+        "onCommand:brazeLiquidPreview.preview"
     ],
     "main": "./out/src/extension",
     "contributes": {
@@ -43,10 +42,6 @@
             {
                 "command": "brazeLiquidPreview.preview",
                 "title": "Braze Liquid: Open Preview to the Side"
-            },
-            {
-                "command": "brazeLiquidPreview.previewText",
-                "title": "Braze Liquid: Open Preview to the Side (Plaintext)"
             }
         ],
         "keybindings": [
@@ -69,7 +64,7 @@
         "copyfiles": "^1.2.0",
         "mocha": "^2.3.3",
         "typescript": "^2.0.3",
-        "vscode": "^1.0.0"
+        "vscode": "^1.1.33"
     },
     "dependencies": {
         "@types/request-promise-native": "^1.0.15",

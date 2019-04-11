@@ -1,13 +1,12 @@
 import {
-    workspace, window, commands, 
-    TextDocumentContentProvider,
-    Event, Uri, EventEmitter, Disposable 
+    workspace, window, 
+    ViewColumn, Uri, WebviewPanel, Disposable 
 } from "vscode";
 import { dirname } from "path";
 import { existsSync, readFileSync } from "fs";
 import renderContent from "./renderContent";
 
-const resolveFileOrText = fileName => {
+const resolveFileOrText = (fileName: string) => {
     console.log(fileName, workspace.textDocuments.map(x => x.fileName));
     let document = workspace.textDocuments.find(e => e.fileName === fileName);
 
@@ -19,24 +18,43 @@ const resolveFileOrText = fileName => {
     }
 }
 
-export default class HtmlDocumentContentProvider implements TextDocumentContentProvider {
-    private _onDidChange = new EventEmitter<Uri>();
+export default class HtmlDocumentContentProvider implements Disposable {
+    private webPanel: WebviewPanel = undefined
     private _fileName: string;
     private _dataFileName: string;
     
     constructor() {
     }
 
-    public provideTextDocumentContent(uri: Uri): Promise<string> {
-        let templateSource;
-        let dataSource;
+    public show(): void {
+        this.webPanel = window.createWebviewPanel(
+            'brazePreviewHtml',
+            'Braze Liquid HTML Preview',
+            ViewColumn.Beside,
+            {}
+        );
+
+        this.update();
+    }
+
+    public async update(): Promise<void> {
+        this.webPanel.webview.html = await this.getHtmlContent();
+    }
+
+    public dispose(): void {
+        this.webPanel.dispose();
+        this.webPanel = undefined;
+    }
+
+    public async getHtmlContent(): Promise<string> {
+        let templateSource: string;
+        let dataSource: string;
         
         if (window.activeTextEditor && window.activeTextEditor.document) {
             let currentFileName = window.activeTextEditor.document.fileName;
-            let dataFileName;
-            let fileName;
+            let dataFileName: string;
+            let fileName: string;
 
-           
             if (currentFileName === this._fileName
                  || currentFileName === this._dataFileName) {
                 // User swtiched editor to context, just use stored on
@@ -54,13 +72,5 @@ export default class HtmlDocumentContentProvider implements TextDocumentContentP
         }
         
         return renderContent(templateSource, dataSource);
-    }
-
-    get onDidChange(): Event<Uri> {
-        return this._onDidChange.event;
-    }
-
-    public update(uri: Uri) {
-        this._onDidChange.fire(uri);
     }
 }

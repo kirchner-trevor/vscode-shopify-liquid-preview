@@ -16,6 +16,13 @@ suite("lib/renderContent", () => {
     assert.equal(html, "Super bar!");
   });
 
+  test("render slice", async () => {
+    const html = await renderContent("sliced = {{ str | slice: 1, -1 }}", JSON.stringify({
+      "str": "abcdef"
+    }));
+    assert.equal(html, "sliced = bcde");
+  });
+
   test("render property_accessor", async () => {
     const html = await renderContent("value is {{ foo | property_accessor: 'bar' }}", JSON.stringify({
       "foo": {

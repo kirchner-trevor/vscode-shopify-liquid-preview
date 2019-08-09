@@ -2,11 +2,10 @@ const vscode = require('vscode');
 const liquid = require('liquidjs');
 const liquidEngine = new liquid();
 
-let templateStatusBarItem;
-let dataStatusBarItem;
-
 function activate(context) {
-    const previewContentProvider = new class {
+    let templateStatusBarItem;
+    let dataStatusBarItem;
+    let previewContentProvider = new class {
         constructor() {
             this.onDidChangeEmitter = new vscode.EventEmitter();
             this.onDidChange = this.onDidChangeEmitter.event;
@@ -95,12 +94,13 @@ function createNewPreview(document) {
         id: id,
         uri: function () {
             function getFileNameAndExtension(filename) {
-                return filename.substring(filename.lastIndexOf('\\') + 1, filename.length) || filename;
+                return filename && filename.substring(filename.lastIndexOf('\\') + 1, filename.length) || filename;
             }
 
             let templateFile = getFileNameAndExtension(this.templateUri);
             let dataFile = getFileNameAndExtension(this.dataUri);
-            let previewFile = 'Preview ' + dataFile + ' + ' + templateFile + '?id=' + id;
+            let dataFileString = dataFile ? dataFile + ' + ' : '';
+            let previewFile = 'Preview ' + dataFileString + templateFile + '?id=' + id;
 
             return vscode.Uri.parse('shopify-liquid-preview:' + previewFile);
         },

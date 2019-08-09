@@ -19,7 +19,9 @@ function activate(context) {
         }
 
         async provideTextDocumentContent(uri) {
-            let preview = this.previews[uri.path + '?' + uri.query];
+            let queryParmeters = new URLSearchParams(uri.query);
+            let previewId = queryParmeters.get('id');
+            let preview = this.previews[previewId];
 
             if (preview.templateUri && preview.templateDirty) {
                 try {
@@ -55,66 +57,58 @@ function activate(context) {
     context.subscriptions.push(vscode.workspace.registerTextDocumentContentProvider('shopify-liquid-preview', previewContentProvider));
 
     context.subscriptions.push(vscode.commands.registerCommand('shopifyLiquidPreview.preview', async () => {
-        let preview = createNewPreview(vscode.window.activeTextEditor && vscode.window.activeTextEditor.document);
-        await updatePreviewDataFile(preview);
-        previewContentProvider.previews[preview.uri] = preview;
+        let document = vscode.window.activeTextEditor && vscode.window.activeTextEditor.document;
+        if (document) {
+            let preview = createNewPreview(document);
+            await updatePreviewDataFile(preview);
+            previewContentProvider.previews[preview.id] = preview;
 
-        let uri = vscode.Uri.parse('shopify-liquid-preview:' + preview.uri);
-        let doc = await vscode.workspace.openTextDocument(uri);
-        let textEditor = await vscode.window.showTextDocument(doc, { preserveFocus: true, preview: false, viewColumn: vscode.ViewColumn.Beside });
-        textEditor.
-    }));
-
-    context.subscriptions.push(vscode.commands.registerCommand('shopifyLiquidPreview.setPreviewData', async () => {
-        let documentPreviews = getDocumentPreviews(previewContentProvider, vscode.window.activeTextEditor && vscode.window.activeTextEditor.document);
-        for (let documentPreview of documentPreviews) {
-            if (documentPreview.isPreview) {
-                await updatePreviewDataFile(documentPreview.preview);
-
-                let uri = vscode.Uri.parse('shopify-liquid-preview:' + documentPreview.preview.uri);
-                previewContentProvider.onDidChangeEmitter.fire(uri);
-            }
+            let doc = await vscode.workspace.openTextDocument(preview.uri());
+            await vscode.window.showTextDocument(doc, { preserveFocus: true, preview: false, viewColumn: vscode.ViewColumn.Beside });
         }
     }));
 
-    context.subscriptions.push(vscode.workspace.onDidChangeTextDocument((e) => {
-        let documentPreviews = getDocumentPreviews(previewContentProvider, e.document);
+    context.subscriptions.push(vscode.workspace.onDidChangeTextDocument((textDocumentChangeEvent) => {
+        let documentPreviews = getDocumentPreviews(previewContentProvider, textDocumentChangeEvent.document);
         for (let documentPreview of documentPreviews) {
             if (documentPreview.isTemplate || documentPreview.isData) {
                 documentPreview.preview.templateDirty = documentPreview.isTemplate;
                 documentPreview.preview.dataDirty = documentPreview.isData;
 
-                let uri = vscode.Uri.parse('shopify-liquid-preview:' + documentPreview.preview.uri);
-                previewContentProvider.onDidChangeEmitter.fire(uri);
+                previewContentProvider.onDidChangeEmitter.fire(documentPreview.preview.uri());
             }
         }
-    }));
-
-    context.subscriptions.push(vscode.workspace.onDidCloseTextDocument((e) => {
-        //TODO cleanup previews
     }));
 
     templateStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
     templateStatusBarItem.show();
     context.subscriptions.push(templateStatusBarItem);
+
     dataStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
     dataStatusBarItem.show();
     context.subscriptions.push(dataStatusBarItem);
 }
 
 function createNewPreview(document) {
-    function getFilename(filename) {
-        return filename.substring(filename.lastIndexOf('\\') + 1, filename.length) || filename;
-    }
-
     let id = Date.now();
-    let templateUri = document.fileName;
-    let templateFile = getFilename(templateUri);
     let preview = {
-        uri: 'Preview ' + templateFile + '?id=' + id,
-        templateUri: templateUri,
+        id: id,
+        uri: function () {
+            function getFileNameAndExtension(filename) {
+                return filename.substring(filename.lastIndexOf('\\') + 1, filename.length) || filename;
+            }
+
+            let templateFile = getFileNameAndExtension(this.templateUri);
+            let dataFile = getFileNameAndExtension(this.dataUri);
+            let previewFile = 'Preview ' + dataFile + ' + ' + templateFile + '?id=' + id;
+
+            return vscode.Uri.parse('shopify-liquid-preview:' + previewFile);
+        },
+        templateUri: document.fileName,
         templateDirty: true,
         template: [],
+        dataUri: null,
+        dataDirty: false,
         data: {}
     };
     return preview;
@@ -122,18 +116,16 @@ function createNewPreview(document) {
 
 function getDocumentPreviews(previewContentProvider, document) {
     let documentPreviews = [];
-    for (let previewUri in previewContentProvider.previews) {
-        let preview = previewContentProvider.previews[previewUri];
+    for (let previewId in previewContentProvider.previews) {
+        let preview = previewContentProvider.previews[previewId];
 
         let isData = preview.dataUri === document.fileName;
-        let isPreview = previewUri === document.fileName;
         let isTemplate = preview.templateUri === document.fileName;
 
-        if (isData || isPreview || isTemplate) {
+        if (isData || isTemplate) {
             documentPreviews.push({
                 preview,
                 isData,
-                isPreview,
                 isTemplate
             });
         }

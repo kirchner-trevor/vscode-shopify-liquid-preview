@@ -43,11 +43,6 @@
             {
                 "command": "shopifyLiquidPreview.preview",
                 "title": "Shopify Liquid: Open Preview to the Side"
-            },
-            {
-                "command": "shopifyLiquidPreview.setPreviewData",
-                "title": "Shopify Liquid: Set Preview Data",
-                "when": "resourceScheme == shopify-liquid-preview"
             }
         ],
         "keybindings": [

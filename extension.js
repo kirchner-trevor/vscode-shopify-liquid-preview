@@ -135,6 +135,7 @@ async function updatePreviewDataFile(preview) {
     let jsonPickItems = jsonUris.map(jsonUri => {
         return {
             label: jsonUri.fsPath && path.basename(jsonUri.fsPath),
+            description: jsonUri.fsPath,
             value: jsonUri.fsPath
         };
     });

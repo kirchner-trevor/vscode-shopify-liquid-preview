@@ -1,3 +1,4 @@
+const path = require('path');
 const vscode = require('vscode');
 const liquid = require('liquidjs');
 const liquidEngine = new liquid();
@@ -93,12 +94,8 @@ function createNewPreview(document) {
     let preview = {
         id: id,
         uri: function () {
-            function getFileNameAndExtension(filename) {
-                return filename && filename.substring(filename.lastIndexOf('\\') + 1, filename.length) || filename;
-            }
-
-            let templateFile = getFileNameAndExtension(this.templateUri);
-            let dataFile = getFileNameAndExtension(this.dataUri);
+            let templateFile = this.templateUri && path.basename(this.templateUri);
+            let dataFile = this.dataUri && path.basename(this.dataUri);
             let dataFileString = dataFile ? dataFile + ' + ' : '';
             let previewFile = 'Preview ' + dataFileString + templateFile + '?id=' + id;
 
@@ -134,16 +131,19 @@ function getDocumentPreviews(previewContentProvider, document) {
 }
 
 async function updatePreviewDataFile(preview) {
-    let defaultUri = vscode.Uri.parse(preview.templateUri + '.json');
-    let dataUris = await vscode.window.showOpenDialog({
-        canSelectFiles: true,
-        canSelectFolders: false,
-        canSelectMany: false,
-        defaultUri: defaultUri,
-        openLabel: 'Set Preview Data'
+    let jsonUris = await vscode.workspace.findFiles('**/*.json');
+    let jsonPickItems = jsonUris.map(jsonUri => {
+        return {
+            label: jsonUri.fsPath && path.basename(jsonUri.fsPath),
+            value: jsonUri.fsPath
+        };
     });
-    if (dataUris && dataUris.length) {
-        preview.dataUri = dataUris[0].fsPath;
+    let pickedItem = await vscode.window.showQuickPick(jsonPickItems, {
+        canPickMany: false,
+        placeHolder: 'Choose a file to use as fake data for your template.'
+    });
+    if (pickedItem) {
+        preview.dataUri = pickedItem.value;
         preview.dataDirty = true;
     }
 }

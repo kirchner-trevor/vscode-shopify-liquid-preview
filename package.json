@@ -2,7 +2,7 @@
     "name": "shopify-liquid-preview",
     "displayName": "Shopify Liquid Preview",
     "description": "Live preview for Shopify Liquid templates",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "publisher": "kirchner-trevor",
     "engines": {
         "vscode": "^1.32.0"
@@ -26,8 +26,7 @@
         "Live Preview"
     ],
     "activationEvents": [
-        "onCommand:shopifyLiquidPreview.preview",
-        "onCommand:shopifyLiquidPreview.setPreviewData"
+        "onCommand:shopifyLiquidPreview.preview"
     ],
     "main": "./extension.js",
     "contributes": {

@@ -2,6 +2,9 @@ const vscode = require('vscode');
 const liquid = require('liquidjs');
 const liquidEngine = new liquid();
 
+let templateStatusBarItem;
+let dataStatusBarItem;
+
 function activate(context) {
     const previewContentProvider = new class {
         constructor() {
@@ -21,9 +24,12 @@ function activate(context) {
             if (preview.templateUri && preview.templateDirty) {
                 try {
                     let templateDocument = await vscode.workspace.openTextDocument(preview.templateUri);
-                    preview.template = templateDocument.getText();
+                    preview.template = liquidEngine.parse(templateDocument.getText());
+                    templateStatusBarItem.text = '$(check) Template';
+                    templateStatusBarItem.tooltip = 'All good!';
                 } catch (err) {
-
+                    templateStatusBarItem.text = '$(x) Template';
+                    templateStatusBarItem.tooltip = err.message;
                 }
             }
 
@@ -31,45 +37,32 @@ function activate(context) {
                 try {
                     let dataDocument = await vscode.workspace.openTextDocument(preview.dataUri);
                     preview.data = JSON.parse(dataDocument.getText());
+                    dataStatusBarItem.text = '$(check) Data';
+                    dataStatusBarItem.tooltip = 'All good!';
                 } catch (err) {
-
+                    dataStatusBarItem.text = '$(x) Data';
+                    dataStatusBarItem.tooltip = err.message;
                 }
             }
 
-            return liquidEngine.parseAndRender(preview.template, preview.data);
+            return await liquidEngine.render(preview.template, preview.data);
         }
     }
     context.subscriptions.push(previewContentProvider);
 
     context.subscriptions.push(vscode.workspace.registerTextDocumentContentProvider('shopify-liquid-preview', previewContentProvider));
 
-    context.subscriptions.push(vscode.commands.registerCommand('shopifyLiquidPreview.preview', async () => {
-        let template = vscode.window.activeTextEditor;
-        if (template) {
-            let templateUri = template.document.fileName;
-            let templateFile = getFilename(templateUri);
-            let previewUri = 'Preview ' + templateFile;
-            previewContentProvider.previews[previewUri] = {
-                templateUri,
-                templateDirty: true,
-                template: '',
-                dataUri: null,
-                dataDirty: false,
-                data: {}
-            };
-            let uri = vscode.Uri.parse('shopify-liquid-preview:' + previewUri);
-            let doc = await vscode.workspace.openTextDocument(uri);
-            await vscode.window.showTextDocument(doc, { preserveFocus: true, preview: false, viewColumn: vscode.ViewColumn.Beside });
-        }
-    }));
-
     context.subscriptions.push(vscode.commands.registerCommand('shopifyLiquidPreview.setPreviewData', async () => {
         let template = vscode.window.activeTextEditor;
         if (template) {
+            let previewUri = template.document.fileName;
+            let templateUri = previewContentProvider.previews[previewUri].templateUri;
+            let defaultUri = vscode.Uri.parse(templateUri + '.json');
             let dataUris = await vscode.window.showOpenDialog({
                 canSelectFiles: true,
                 canSelectFolders: false,
                 canSelectMany: false,
+                defaultUri: defaultUri,
                 openLabel: 'Set Preview Data'
             });
             if (dataUris && dataUris.length) {
@@ -82,21 +75,22 @@ function activate(context) {
         }
     }));
 
-    context.subscriptions.push(vscode.commands.registerCommand('shopifyLiquidPreview.previewWithData', async () => {
+    context.subscriptions.push(vscode.commands.registerCommand('shopifyLiquidPreview.preview', async () => {
         let template = vscode.window.activeTextEditor;
         if (template) {
             let templateUri = template.document.fileName;
             let templateFile = getFilename(templateUri);
             let previewUri = 'Preview ' + templateFile;
             previewContentProvider.previews[previewUri] = {
-                template: '',
+                template: [],
                 data: {}
             };
-
+            let defaultUri = vscode.Uri.parse(template.document.uri.fsPath + '.json');
             let dataUris = await vscode.window.showOpenDialog({
                 canSelectFiles: true,
                 canSelectFolders: false,
                 canSelectMany: false,
+                defaultUri: defaultUri,
                 openLabel: 'Set Preview Data'
             });
             if (dataUris && dataUris.length) {
@@ -132,6 +126,13 @@ function activate(context) {
     context.subscriptions.push(vscode.workspace.onDidCloseTextDocument((e) => {
         //TODO cleanup previews
     }));
+
+    templateStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
+    templateStatusBarItem.show();
+    context.subscriptions.push(templateStatusBarItem);
+    dataStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
+    dataStatusBarItem.show();
+    context.subscriptions.push(dataStatusBarItem);
 
     function getFilename(filename) {
         return filename.substring(filename.lastIndexOf('\\') + 1, filename.length) || filename;

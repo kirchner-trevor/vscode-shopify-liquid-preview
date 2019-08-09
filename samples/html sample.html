@@ -1,7 +1,12 @@
 <html>
 
 <body>
-    <em>What does a goood ({{sample}}) look like?</em>
+    <h1>{{ 'hello, world!' | capitalize | remove: "world" }}</h1>
+    {% if product.available %}
+    <h2>Price: $99.99</h2>
+    {% else %}
+    <h2 class="sold-out">Sorry, this product is sold out.</h2>
+    {% endif %}
 </body>
 
 </html>

@@ -27,7 +27,8 @@
     ],
     "activationEvents": [
         "onCommand:shopifyLiquidPreview.preview",
-        "onCommand:shopifyLiquidPreview.previewText"
+        "onCommand:shopifyLiquidPreview.previewText",
+        "onCommand:shopifyLiquidPreview.previewWithData"
     ],
     "main": "./extension.js",
     "contributes": {
@@ -47,6 +48,10 @@
             {
                 "command": "shopifyLiquidPreview.setPreviewData",
                 "title": "Shopify Liquid: Set Preview Data"
+            },
+            {
+                "command": "shopifyLiquidPreview.previewWithData",
+                "title": "Shopify Liquid: Open Preview to the Side with Data"
             }
         ],
         "keybindings": [

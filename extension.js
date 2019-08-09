@@ -82,6 +82,37 @@ function activate(context) {
         }
     }));
 
+    context.subscriptions.push(vscode.commands.registerCommand('shopifyLiquidPreview.previewWithData', async () => {
+        let template = vscode.window.activeTextEditor;
+        if (template) {
+            let templateUri = template.document.fileName;
+            let templateFile = getFilename(templateUri);
+            let previewUri = 'Preview ' + templateFile;
+            previewContentProvider.previews[previewUri] = {
+                template: '',
+                data: {}
+            };
+
+            let dataUris = await vscode.window.showOpenDialog({
+                canSelectFiles: true,
+                canSelectFolders: false,
+                canSelectMany: false,
+                openLabel: 'Set Preview Data'
+            });
+            if (dataUris && dataUris.length) {
+                previewContentProvider.previews[previewUri].dataUri = dataUris[0].fsPath;
+                previewContentProvider.previews[previewUri].dataDirty = true;
+            }
+
+            previewContentProvider.previews[previewUri].templateUri = templateUri;
+            previewContentProvider.previews[previewUri].templateDirty = true;
+
+            let uri = vscode.Uri.parse('shopify-liquid-preview:' + previewUri);
+            let doc = await vscode.workspace.openTextDocument(uri);
+            await vscode.window.showTextDocument(doc, { preserveFocus: true, preview: false, viewColumn: vscode.ViewColumn.Beside });
+        }
+    }));
+
     context.subscriptions.push(vscode.workspace.onDidChangeTextDocument((e) => {
         if (e.document.uri.scheme !== 'shopify-liquid-preview') {
             for (let previewUri in previewContentProvider.previews) {
@@ -99,9 +130,7 @@ function activate(context) {
     }));
 
     context.subscriptions.push(vscode.workspace.onDidCloseTextDocument((e) => {
-        if (e.document.uri.scheme === 'shopify-liquid-preview') {
-            delete previewContentProvider.previews[e.document.fileName];
-        }
+        //TODO cleanup previews
     }));
 
     function getFilename(filename) {

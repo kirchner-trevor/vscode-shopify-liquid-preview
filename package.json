@@ -1,0 +1,67 @@
+{
+    "name": "shopify-liquid-preview",
+    "displayName": "Shopify Liquid Preview",
+    "description": "Live preview for Shopify Liquid templates",
+    "version": "2.0.0",
+    "publisher": "kirchner-trevor",
+    "engines": {
+        "vscode": "^1.32.0"
+    },
+    "icon": "icon.png",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kirchner-trevor/vscode-shopify-liquid-preview"
+    },
+    "galleryBanner": {
+        "color": "#0F6378",
+        "theme": "dark"
+    },
+    "categories": [
+        "Other"
+    ],
+    "keywords": [
+        "Shopify",
+        "Liquid",
+        "Template",
+        "Live Preview"
+    ],
+    "activationEvents": [
+        "onCommand:shopifyLiquidPreview.preview",
+        "onCommand:shopifyLiquidPreview.previewText"
+    ],
+    "main": "./extension.js",
+    "contributes": {
+        "languages": [
+            {
+                "id": "liquid",
+                "extensions": [
+                    ".liquid"
+                ]
+            }
+        ],
+        "commands": [
+            {
+                "command": "shopifyLiquidPreview.preview",
+                "title": "Shopify Liquid: Open Preview to the Side"
+            },
+            {
+                "command": "shopifyLiquidPreview.setPreviewData",
+                "title": "Shopify Liquid: Set Preview Data"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "shopifyLiquidPreview.preview",
+                "key": "ctrl+k v",
+                "when": "editorLangId == liquid"
+            }
+        ]
+    },
+    "scripts": {},
+    "devDependencies": {
+        "@types/vscode": "^1.32.0"
+    },
+    "dependencies": {
+        "liquidjs": "^8.4.1"
+    }
+}
